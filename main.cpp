@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iomanip>
 #include <random>
+
 #include "fuzzy.hpp"
 
 // -------------------
@@ -106,7 +107,9 @@ int main()
         // -------------------------------------------------------
         // fuzzy controller do some calculation and output result
         // -------------------------------------------------------
-        acc_me = fuzzy_control(SPEED_RELATIVE, distance/IDEAL_DISTANCE);
+        acc_me = fuzzy_control(
+            SPEED_RELATIVE
+          , distance/IDEAL_DISTANCE);
         
         // ----------------------
         // update all parameters
