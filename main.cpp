@@ -11,7 +11,7 @@
 #define DEBUG 1
 #define TRAVEL_TIME 1000 // seconds
 // Chance of front car leaves or other car enter
-#define CHANCE_OF_DISTANCE_JUMP 0 // percent
+#define CHANCE_OF_DISTANCE_JUMP 5 // percent
 // chance of front car change acceleration
 #define CHANCE_OF_ACC_CHANGE 0 // percent
 
@@ -100,7 +100,7 @@ int main()
             if(i%2 == 0) 
             {
                 // front car leaves
-                distance += (rdm_number%5+1) * CAR_LENGTH;
+                distance += 100 * CAR_LENGTH;
                 #if DEBUG
                     std::cout << "front_car_leaves\t"; 
                 #endif
@@ -108,22 +108,26 @@ int main()
             else if(i%2 == 1 && distance > CAR_LENGTH)
             {
                 // other car cut
-                distance -= CAR_LENGTH;
+                distance -= 20*CAR_LENGTH;
                 acc_front = 0;
-                speed_front--;
                 #if DEBUG
                     std::cout << "other_car_enter\t"; 
                 #endif
             }
         // - front car speed up or slow down (change acc_front)
-        if(acc_duration <= 0 && rdm_number < CHANCE_OF_ACC_CHANGE)
+        if(acc_duration <= 1)
         {
-            acc_duration = (rdm_number%20+1);
-            acc_front = (rdm_number%2 == 0) ?1.0 :-1.0;
-            #if DEBUG
-                std::cout << "acceleration: " << acc_front; 
-            #endif
-        } 
+            acc_front = 0;
+
+            if(rdm_number < CHANCE_OF_ACC_CHANGE)
+            {
+                acc_duration = (rdm_number%20+1);
+                acc_front = (rdm_number%2 == 0) ?1.0 :-1.0;
+                #if DEBUG
+                    std::cout << "change acceleration: " << acc_front << "\tducration: " << acc_duration; 
+                #endif
+            } 
+        }
         else
             acc_duration--;
 
@@ -150,7 +154,7 @@ int main()
         // check collision
         if(distance <= 0)
         {
-            distance = 0;
+            distance = 2;
             speed_me = 0;
             acc_me = 0;
             num_collistion++;
@@ -181,9 +185,9 @@ int main()
               << std::endl;
     // 3. safeness
     std::cout << "Safeness " 
-              << "(#collision/seconds)\n" 
+              << "(#collision)\n" 
               << std::fixed << std::setprecision(3)
-              << num_collistion / (float)TRAVEL_TIME 
+              << num_collistion  
               << std::endl;
 
     return 0;
