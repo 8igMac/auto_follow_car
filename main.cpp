@@ -8,7 +8,7 @@
 // -------------------
 // tunable parameters
 // -------------------
-#define DEBUG 0
+#define DEBUG 1
 #define TRAVEL_TIME 1000 // seconds
 // Chance of front car leaves or other car enter
 #define CHANCE_OF_DISTANCE_JUMP 0 // percent
@@ -28,7 +28,7 @@
 #define INIT_ACC_ME 0 
 #define SPEED_RELATIVE (speed_front-speed_me)
 #define ACC_RELATIVE (acc_front-acc_me)
-#define IDEAL_DISTANCE (3.0*SPEED_RELATIVE) // seconds travel
+#define IDEAL_DISTANCE (speed_me*1.5) // seconds travel
 #define CAR_LENGTH 5 // m
 
 
@@ -64,7 +64,30 @@ int main()
     for(int i=0; i<TRAVEL_TIME; i++)
     {
         #if DEBUG 
-            std::cout << "[" << i << "]\t";
+            std::cout << "[" << i << "]\n";
+            std::cout << "relative speed: " 
+                      << std::fixed << std::setprecision(3)
+                      << SPEED_RELATIVE << "\n" 
+
+                      << "distance ratio: "
+                      << std::fixed << std::setprecision(3)
+                      << distance/IDEAL_DISTANCE << "\n" 
+
+                      << "acc_me: "
+                      << std::fixed << std::setprecision(3)
+                      << acc_me << "\n"
+
+                      << "acc_front: "
+                      << std::fixed << std::setprecision(3)
+                      << acc_front << "\n"
+
+                      << "speed_me: "
+                      << std::fixed << std::setprecision(3)
+                      << speed_me << "\n"
+
+                      << "speed_front: "
+                      << std::fixed << std::setprecision(3)
+                      << speed_front << "\n";
         #endif
 
         // --------------
@@ -131,6 +154,7 @@ int main()
             speed_me = 0;
             acc_me = 0;
             num_collistion++;
+            std::cout << "\touch!!\t";  //debug
         }
 
         #if DEBUG 
